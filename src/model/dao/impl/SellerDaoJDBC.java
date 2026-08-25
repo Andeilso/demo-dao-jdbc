@@ -5,6 +5,7 @@ import db.DbException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import model.dao.SellerDao;
@@ -46,32 +47,20 @@ public class SellerDaoJDBC implements SellerDao{
                 "SELECT seller.*, department.Name as DepName "
                 + "FROM seller INNER JOIN department "
                 + "ON seller.DepartmentId = department.Id "
-                + "Where seller.id = ?", ResultSet.TYPE_FORWARD_ONLY);
+                + "Where seller.id = ?");
     
             st.setInt(1, id);
             rs = st.executeQuery();
     
             if(rs.next()){
-                Department department = new Department(
-                    rs.getInt("DepartmentId"), 
-                    rs.getString("DepName")
-                );
-    
-                return new Seller(
-                    rs.getInt("Id"),
-                    rs.getString("Name"),
-                    rs.getString("Email"),
-                    LocalDate.parse(rs.getDate("BirthDate").toString()),
-                    rs.getDouble("BaseSalary"),
-                    department
-                );
+                Department department = instatiateDepartment(rs);
+                return instantiateSeller(rs, department);
             };
     
             throw new DbException("Seller not found!");
         } catch (Exception e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeConnection();
             DB.closeStatement(st);
             DB.closeResultSet(rs);
         }
@@ -82,5 +71,22 @@ public class SellerDaoJDBC implements SellerDao{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'findAll'");
     }
-
+    
+    private Department instatiateDepartment(ResultSet rs) throws SQLException{
+        return new Department(
+            rs.getInt("DepartmentId"), 
+            rs.getString("DepName")
+        );
+    }
+    
+    private Seller instantiateSeller(ResultSet rs, Department department) throws SQLException{
+        return new Seller(
+            rs.getInt("Id"),
+            rs.getString("Name"),
+            rs.getString("Email"),
+            LocalDate.parse(rs.getDate("BirthDate").toString()),
+            rs.getDouble("BaseSalary"),
+            department
+        );
+    }
 }
