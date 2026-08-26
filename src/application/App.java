@@ -31,8 +31,17 @@ public class App {
         System.out.println();
         
         System.out.println("===== Test 4: seller insert =====");
-        Seller newSeller = new Seller(null, "Marcos da Silva", "marcos@email.com", LocalDate.now(), 2000.00, new Department(2, null));
+        Seller newSeller = new Seller(null, "Carlos Cavalcante", "carlos@email.com", LocalDate.now(), 4000.00, new Department(4, null));
         sellerDao.insert(newSeller);
         System.out.println("Inserted! New id = " + newSeller.getId());
+        System.out.println();
+        
+        System.out.println("===== Test 4: seller insert =====");
+        sellerDao.deleteById(newSeller.getId());
+        sellerList = sellerDao.findAll();
+        for(Seller currentSeller : sellerList){
+            System.out.println(currentSeller);
+        }
+        System.out.println();
     }
 }
