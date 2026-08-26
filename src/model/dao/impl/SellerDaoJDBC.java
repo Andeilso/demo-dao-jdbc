@@ -62,8 +62,32 @@ public class SellerDaoJDBC implements SellerDao{
 
     @Override
     public void update(Seller seller) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        PreparedStatement st = null;
+
+        try {
+            st = conn.prepareStatement(
+                "UPDATE seller "
+                + "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+                + "Where Id =?"
+            );
+
+            st.setString(1, seller.getName());
+            st.setString(2, seller.getEmail());
+            st.setDate(3, Date.valueOf(seller.getBirthDate()));
+            st.setDouble(4, seller.getBaseSalary());
+            st.setInt(5, seller.getDepartment().getId());
+            st.setInt(6, seller.getId());
+
+            int rowsAffected = st.executeUpdate();
+
+            if(rowsAffected == 0){
+                throw new DbException("Update erro: Seller not Found!");
+            }
+        } catch (Exception e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB.closeStatement(st);
+        }
     }
 
     @Override
@@ -86,7 +110,7 @@ public class SellerDaoJDBC implements SellerDao{
         } catch (Exception e) {
             throw new DbException(e.getMessage());
         } finally {
-            DB.closeStatement(st);;
+            DB.closeStatement(st);
         }
     }
 

@@ -35,8 +35,26 @@ public class App {
         sellerDao.insert(newSeller);
         System.out.println("Inserted! New id = " + newSeller.getId());
         System.out.println();
+
+        sellerList = sellerDao.findAll();
+        for(Seller currentSeller : sellerList){
+            System.out.println(currentSeller);
+        }
+        System.out.println();
         
-        System.out.println("===== Test 4: seller insert =====");
+        System.out.println("===== Test 5: seller update =====");
+        newSeller.setName("Antonio Nunes");
+        newSeller.setEmail("antonio@email.com");
+        sellerDao.update(newSeller);
+        System.out.println("Update completed!");
+
+        sellerList = sellerDao.findAll();
+        for(Seller currentSeller : sellerList){
+            System.out.println(currentSeller);
+        }
+        System.out.println();
+        
+        System.out.println("===== Test 6: seller delete =====");
         sellerDao.deleteById(newSeller.getId());
         sellerList = sellerDao.findAll();
         for(Seller currentSeller : sellerList){
