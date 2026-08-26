@@ -13,12 +13,21 @@ public class App {
         System.out.println("===== Test 1: seller findById =====");
         Seller seller = sellerDao.findById(1);
         System.out.println(seller);
+        System.out.println();
         
         System.out.println("===== Test 2: seller findByDepartment =====");
         List<Seller> sellerList = sellerDao.findByDepartment(new Department(2, null));
         for(Seller currentSeller : sellerList){
             System.out.println(currentSeller);
         }
+        System.out.println();
+        
+        System.out.println("===== Test 3: seller findAll =====");
+        sellerList = sellerDao.findAll();
+        for(Seller currentSeller : sellerList){
+            System.out.println(currentSeller);
+        }
+        System.out.println();
 
     }
 }
