@@ -62,6 +62,8 @@ public class App {
         // }
         // System.out.println();
             
+        //  -------------------------------- DEPARTMENT --------------------------------
+
         System.out.println("===== Test 7: department findById =====");
         Department department = departmentDao.findById(1);
         System.out.println(department);
@@ -69,6 +71,32 @@ public class App {
             
         System.out.println("===== Test 8: department findAll =====");
         List<Department> departmentList = departmentDao.findAll();
+        for(Department dep : departmentList){
+            System.out.println(dep);
+        }
+        System.out.println();
+            
+        System.out.println("===== Test 9: department insert =====");
+        department = new Department(null, "HR");
+        departmentDao.insert(department);
+        departmentList = departmentDao.findAll();
+        for(Department dep : departmentList){
+            System.out.println(dep);
+        }
+        System.out.println();
+            
+        System.out.println("===== Test 10: department update =====");
+        department.setName("Human Resources");
+        departmentDao.update(department);
+        departmentList = departmentDao.findAll();
+        for(Department dep : departmentList){
+            System.out.println(dep);
+        }
+        System.out.println();
+            
+        System.out.println("===== Test 11: department delete =====");
+        departmentDao.deleteById(department.getId());
+        departmentList = departmentDao.findAll();
         for(Department dep : departmentList){
             System.out.println(dep);
         }
